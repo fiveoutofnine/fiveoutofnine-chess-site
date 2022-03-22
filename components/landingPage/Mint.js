@@ -15,6 +15,7 @@ import {
     Image,
     Input,
     useNumberInput,
+    useToast,
 } from '@chakra-ui/react'
 
 import {
@@ -46,6 +47,7 @@ export default function Mint() {
         0, 0, 0, 0, 0, 0, 0, 0,
     ])
     const [userAddress, setUserAddress] = useState('')
+    const toast = useToast()
 
     async function getBoard() {
         const currentBoard = (await ethersContract.board())._hex
@@ -244,11 +246,15 @@ export default function Mint() {
                                 : getMetaMaskInstalled()
                                     ? userAddress === ''
                                         ? connectMetamask
-                                        : () => mintMove(
+                                        : () => toast({
+                                            title: 'Frontend minting disabled for now',
+                                            status: 'error',
+                                            isClosable: false,
+                                        })/* mintMove(
                                             userAddress,
                                             ((63 - startingIndex) << 6) | (63 - endingIndex),
                                             input.value
-                                        )
+                                        ) */
                                     : () => {}}
                             _hover={endingIndex === -1
                                 ? { cursor: 'not-allowed' }
